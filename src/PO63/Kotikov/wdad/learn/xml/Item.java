@@ -17,6 +17,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 @XmlType(name = "")
 @XmlRootElement(name = "item")
 public class Item {
+    //todo cost - сделай тип int или double, JAXB прекрасно конвертит примитивы в String и наоборот.
 
     @XmlAttribute(name = "name", required = true)
     @XmlJavaTypeAdapter(NormalizedStringAdapter.class)

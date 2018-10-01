@@ -23,6 +23,7 @@ public class Order {
 
     protected Officiant officiant;
     protected List<Item> item;
+    //todo totalcost - сделай тип int или double (в зависимости от типа поля cost в item).
     protected String totalcost;
 
     /**

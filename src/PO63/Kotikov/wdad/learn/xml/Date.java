@@ -21,7 +21,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 })
 @XmlRootElement(name = "date")
 public class Date {
-
+    //todo day, moth, year - сделай тип int, JAXB прекрасно конвертит примитивы в String и наоборот. Работа с примитивами сильно упростит твои проверки
     @XmlAttribute(name = "day", required = true)
     @XmlJavaTypeAdapter(NormalizedStringAdapter.class)
     protected String day;
