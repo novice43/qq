@@ -2,15 +2,20 @@ package PO63.Kotikov.wdad.learn.xml;
 
 import org.xml.sax.SAXParseException;
 
+import javax.xml.XMLConstants;
 import javax.xml.bind.JAXB;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import java.io.FileOutputStream;
 import java.io.StringReader;
+import java.nio.CharBuffer;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.security.Security;
 import java.util.Calendar;
+
+import static java.security.Security.getProperty;
 
 public class XmlTask
 {
@@ -41,19 +46,18 @@ public class XmlTask
         marshaller.marshal(obj, new FileOutputStream(filename));
     }
 
-    public int earningsTotal(String officiantSecondName, Calendar calendar)
+    public double earningsTotal(String officiantSecondName, Calendar calendar)
     {
-        int total = 0;
-        int d = calendar.get(Calendar.DAY_OF_MONTH);
-        Date comparingDate = Date.newInstance(d < 10 ? "0" + String.valueOf(d) : String.valueOf(d), String.valueOf(calendar.get(Calendar.MONTH)+1), String.valueOf(calendar.get(Calendar.YEAR)), null);
+        double total = 0.0;
+        Date comparingDate = Date.newInstance(calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.MONTH)+1, calendar.get(Calendar.YEAR), null);
         for(Order ord : restaurant.getDate(comparingDate).getOrdersByOfficiantSecondName(officiantSecondName))
-            total += Integer.parseInt(ord.totalcost);
-        return total == 0 ? -1 : total;
+            total += ord.totalcost;
+        return total == 0.0 ? -1 : total;
     }
     public void removeDay(Calendar calendar)
     {
         int d = calendar.get(Calendar.DAY_OF_MONTH);
-        restaurant.date.remove(restaurant.getDate(Date.newInstance(d < 10 ? "0" + String.valueOf(d) : String.valueOf(d), String.valueOf(calendar.get(Calendar.MONTH)+1), String.valueOf(calendar.get(Calendar.YEAR)), null)));
+        restaurant.date.remove(restaurant.getDate(Date.newInstance(calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.MONTH)+1, calendar.get(Calendar.YEAR), null)));
     }
     public void changeOfficiantName(String oldFirstName, String oldSecondName, String newFirstName, String newSecondName)
     {

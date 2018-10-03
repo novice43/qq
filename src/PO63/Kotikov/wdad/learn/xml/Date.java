@@ -1,6 +1,8 @@
 
 package PO63.Kotikov.wdad.learn.xml;
 
+import com.sun.xml.internal.bind.AnyTypeAdapter;
+
 import java.util.ArrayList;
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -8,7 +10,9 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.HexBinaryAdapter;
 import javax.xml.bind.annotation.adapters.NormalizedStringAdapter;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 
@@ -21,19 +25,19 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 })
 @XmlRootElement(name = "date")
 public class Date {
-    //todo day, moth, year - сделай тип int, JAXB прекрасно конвертит примитивы в String и наоборот. Работа с примитивами сильно упростит твои проверки
+    //todo day, moth, year - сделай тип int, JAXB прекрасно конвертит примитивы в String и наоборот. Работа с примитивами сильно упростит твои проверки DONE
     @XmlAttribute(name = "day", required = true)
-    @XmlJavaTypeAdapter(NormalizedStringAdapter.class)
-    protected String day;
+    @XmlJavaTypeAdapter(IntTypeAdapter.class)
+    protected Integer day;
     @XmlAttribute(name = "month", required = true)
-    @XmlJavaTypeAdapter(NormalizedStringAdapter.class)
-    protected String month;
+    @XmlJavaTypeAdapter(IntTypeAdapter.class)
+    protected Integer month;
     @XmlAttribute(name = "year", required = true)
-    @XmlJavaTypeAdapter(NormalizedStringAdapter.class)
-    protected String year;
+    @XmlJavaTypeAdapter(IntTypeAdapter.class)
+    protected Integer year;
     protected List<Order> order;
 
-    public static Date newInstance(String day, String month, String year, List<Order> order)
+    public static Date newInstance(int day, int month, int year, List<Order> order)
     {
         Date newDate = new Date();
         newDate.day = day;
@@ -48,10 +52,10 @@ public class Date {
      * 
      * @return
      *     possible object is
-     *     {@link String }
+     *     {@link int }
      *     
      */
-    public String getDay() {
+    public int getDay() {
         return day;
     }
 
@@ -60,10 +64,10 @@ public class Date {
      * 
      * @param value
      *     allowed object is
-     *     {@link String }
+     *     {@link int }
      *     
      */
-    public void setDay(String value) {
+    public void setDay(int value) {
         this.day = value;
     }
 
@@ -72,10 +76,10 @@ public class Date {
      * 
      * @return
      *     possible object is
-     *     {@link String }
+     *     {@link int }
      *     
      */
-    public String getMonth() {
+    public int getMonth() {
         return month;
     }
 
@@ -84,10 +88,10 @@ public class Date {
      * 
      * @param value
      *     allowed object is
-     *     {@link String }
+     *     {@link int }
      *     
      */
-    public void setMonth(String value) {
+    public void setMonth(int value) {
         this.month = value;
     }
 
@@ -96,10 +100,10 @@ public class Date {
      * 
      * @return
      *     possible object is
-     *     {@link String }
+     *     {@link int }
      *     
      */
-    public String getYear() {
+    public int getYear() {
         return year;
     }
 
@@ -108,10 +112,10 @@ public class Date {
      * 
      * @param value
      *     allowed object is
-     *     {@link String }
+     *     {@link int }
      *     
      */
-    public void setYear(String value) {
+    public void setYear(int value) {
         this.year = value;
     }
 
@@ -146,7 +150,7 @@ public class Date {
 
     public boolean equalsByDate(Date obj)
     {
-        return this.year.equals(obj.year) && this.month.equals(obj.month) && this.day.equals(obj.day);
+        return this.year == obj.year && this.month == obj.month && this.day == obj.day;
     }
 
     @Override
@@ -163,7 +167,7 @@ public class Date {
     @Override
     public int hashCode()
     {
-        return this.day.hashCode()^this.month.hashCode()^this.year.hashCode()^this.order.hashCode();
+        return this.day^this.month^this.year^this.order.hashCode();
     }
 
     public List<Order> getOrdersByOfficiantSecondName(String officiantSecondName)

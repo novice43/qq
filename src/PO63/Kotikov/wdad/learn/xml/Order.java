@@ -23,8 +23,8 @@ public class Order {
 
     protected Officiant officiant;
     protected List<Item> item;
-    //todo totalcost - сделай тип int или double (в зависимости от типа поля cost в item).
-    protected String totalcost;
+    //todo totalcost - сделай тип int или double (в зависимости от типа поля cost в item). DONE
+    protected double totalcost;
 
     /**
      * Gets the value of the officiant property.
@@ -84,10 +84,10 @@ public class Order {
      * 
      * @return
      *     possible object is
-     *     {@link String }
+     *     {@link double }
      *     
      */
-    public String getTotalcost() {
+    public double getTotalcost() {
         return totalcost;
     }
 
@@ -96,10 +96,10 @@ public class Order {
      * 
      * @param value
      *     allowed object is
-     *     {@link String }
+     *     {@link double }
      *     
      */
-    public void setTotalcost(String value) {
+    public void setTotalcost(double value) {
         this.totalcost = value;
     }
 

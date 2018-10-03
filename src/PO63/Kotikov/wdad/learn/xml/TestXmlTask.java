@@ -16,7 +16,7 @@ public class TestXmlTask
         SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
         Date date = sdf.parse("07.12.2006");
         cal.setTime(date);
-        int total = task.earningsTotal("vasilenko", cal);
+        double total = task.earningsTotal("vasilenko", cal);
         task.removeDay(cal);
         XmlTask.saveObjectToXML("new.xml", Restaurant.class, task.getRestaurant());
     }
