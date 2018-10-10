@@ -11,6 +11,8 @@ import java.util.List;
 
 public class PreferencesManager
 {
+    private static Properties activeProperties;
+
     protected static Appconfig rootElement;
 
     protected final static PreferencesManager instance = new PreferencesManager();
@@ -20,7 +22,7 @@ public class PreferencesManager
         StringReader sr = new StringReader(new String(Files.readAllBytes(Paths.get(filename))));
         JAXBContext context = JAXBContext.newInstance(c);
         Unmarshaller unmarshaller = context.createUnmarshaller();
-        return (Object)unmarshaller.unmarshal(sr);
+        return (Object) unmarshaller.unmarshal(sr);
     }
 
     private static void saveObjectToXML(String filename, Class c, Object obj) throws Exception
@@ -33,75 +35,120 @@ public class PreferencesManager
     public void readXml(String filename) throws Exception
     {
         rootElement = (Appconfig) loadObjectFromXML(filename, Rmi.class);
+        activeProperties = new Properties(rootElement);
     }
 
-    public Rmi getRmi()
+    @Deprecated
+    public static Rmi getRmi(Appconfig rootElement)
     {
         return rootElement.rmi;
     }
 
-    public void setRmi(Rmi rmi)
+    @Deprecated
+    public static void setRmi(Appconfig rootElement, Rmi rmi)
     {
         rootElement.rmi = rmi;
     }
 
-    public Server getServer()
+    @Deprecated
+    public static Server getServer(Appconfig rootElement)
     {
         return rootElement.rmi.server;
     }
 
-    public void setServer(Server server)
+    @Deprecated
+    public static void setServer(Appconfig rootElement, Server server)
     {
         rootElement.rmi.server = server;
     }
 
-    public Client getClient()
+    @Deprecated
+    public static Client getClient(Appconfig rootElement)
     {
         return rootElement.rmi.client;
     }
 
-    public void setClient(Client client)
+    @Deprecated
+    public static void setClient(Appconfig rootElement, Client client)
     {
         rootElement.rmi.client = client;
     }
 
-    public void setClassprovider(String classprovider)
+    @Deprecated
+    public static void setClassprovider(Appconfig rootElement, String classprovider)
     {
         rootElement.rmi.classprovider = classprovider;
     }
 
-    public String getClassprovider()
+    @Deprecated
+    public static String getClassprovider(Appconfig rootElement)
     {
         return rootElement.rmi.classprovider;
     }
 
-    public List<Object> getRegistryOrBindedObject()
+    @Deprecated
+    public static List<Object> getRegistryOrBindedObject(Appconfig rootElement)
     {
         return rootElement.rmi.server.registryOrBindedobject;
     }
 
-    public void setRegistryOrBindedObject(List<Object> objects)
+    @Deprecated
+    public static void setRegistryOrBindedObject(Appconfig rootElement, List<Object> objects)
     {
         rootElement.rmi.server.registryOrBindedobject = objects;
     }
 
-    public void setPolicyPath(String policyPath)
+    @Deprecated
+    public static void setPolicyPath(Appconfig rootElement, String policyPath)
     {
         rootElement.rmi.client.policypath = policyPath;
     }
 
-    public String getPolicyPath()
+    @Deprecated
+    public static String getPolicyPath(Appconfig rootElement)
     {
         return rootElement.rmi.client.policypath;
     }
 
-    public void setUseCodeBaseOnly(String useCodeBaseOnly)
+    @Deprecated
+    public static void setUseCodeBaseOnly(Appconfig rootElement, String useCodeBaseOnly)
     {
         rootElement.rmi.client.usecodebaseonly = useCodeBaseOnly;
     }
 
-    public String getUseCodeBaseOnly()
+    @Deprecated
+    public static String getUseCodeBaseOnly(Appconfig rootElement)
     {
         return rootElement.rmi.client.usecodebaseonly;
+    }
+
+    public void setProperty(String key, String value)
+    {
+
+    }
+
+    public String getProperty(String key)
+    {
+        return null;
+    }
+
+    public void setProperties(Properties prop)
+    {
+
+    }
+
+    public Properties getProperties()
+    {
+        return null;
+    }
+
+    public void addBindedObject(String name, String className)
+    {
+
+    }
+
+    public void removeBindedObject(String name)
+    {
+
     }
 }
