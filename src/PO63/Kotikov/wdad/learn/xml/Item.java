@@ -25,8 +25,7 @@ public class Item {
     @XmlJavaTypeAdapter(NormalizedStringAdapter.class)
     protected String name;
     @XmlAttribute(name = "cost", required = true)
-    @XmlJavaTypeAdapter(DoubleTypeAdapter.class)
-    protected Double cost;
+    private double cost;
 
     /**
      * Gets the value of the name property.

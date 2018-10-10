@@ -27,17 +27,14 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 public class Date {
     //todo day, moth, year - сделай тип int, JAXB прекрасно конвертит примитивы в String и наоборот. Работа с примитивами сильно упростит твои проверки DONE
     @XmlAttribute(name = "day", required = true)
-    @XmlJavaTypeAdapter(IntTypeAdapter.class)
-    protected Integer day;
+    private int day;
     @XmlAttribute(name = "month", required = true)
-    @XmlJavaTypeAdapter(IntTypeAdapter.class)
-    protected Integer month;
+    private int month;
     @XmlAttribute(name = "year", required = true)
-    @XmlJavaTypeAdapter(IntTypeAdapter.class)
-    protected Integer year;
-    protected List<Order> order;
+    private int year;
+    List<Order> order;
 
-    public static Date newInstance(int day, int month, int year, List<Order> order)
+    static Date newInstance(int day, int month, int year, List<Order> order)
     {
         Date newDate = new Date();
         newDate.day = day;
@@ -148,7 +145,7 @@ public class Date {
         return this.order;
     }
 
-    public boolean equalsByDate(Date obj)
+    boolean equalsByDate(Date obj)
     {
         return this.year == obj.year && this.month == obj.month && this.day == obj.day;
     }
@@ -170,7 +167,7 @@ public class Date {
         return this.day^this.month^this.year^this.order.hashCode();
     }
 
-    public List<Order> getOrdersByOfficiantSecondName(String officiantSecondName)
+    List<Order> getOrdersByOfficiantSecondName(String officiantSecondName)
     {
         List<Order> officiantsOrder = new ArrayList<>();
         for(Order order : this.order)

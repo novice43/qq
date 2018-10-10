@@ -10,7 +10,7 @@ public class TestXmlTask
 {
     public static void main(String[] args) throws Exception
     {
-        XmlTask task = new XmlTask();
+        XmlTask task = new XmlTask("rest.xml", Restaurant.class);
         task.changeOfficiantName("petya", "petrov", "vasya", "vasilenko");
         Calendar cal = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");

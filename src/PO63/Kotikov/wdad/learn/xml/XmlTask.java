@@ -17,36 +17,43 @@ import java.util.Calendar;
 
 import static java.security.Security.getProperty;
 
-public class XmlTask
+class XmlTask
 {
-    public Restaurant getRestaurant()
+    private static boolean inited;
+
+    Restaurant getRestaurant()
     {
         return restaurant;
     }
 
     private Restaurant restaurant;
 
-    XmlTask() throws Exception
+    XmlTask(String filename, Class c) throws Exception
     {
-        restaurant = (Restaurant)loadObjectFromXML("rest.xml", Restaurant.class);
+        if(!inited)
+        {
+            System.setProperty("javax.xml.accessExternalDTD", "all");
+            inited = true;
+        }
+        restaurant = (Restaurant)loadObjectFromXML(filename, c);
     }
 
-    static Object loadObjectFromXML(String filename, Class c) throws Exception
+    private static Object loadObjectFromXML(String filename, Class c) throws Exception
     {
         StringReader sr = new StringReader(new String(Files.readAllBytes(Paths.get(filename))));
         JAXBContext context = JAXBContext.newInstance(c);
         Unmarshaller unmarshaller = context.createUnmarshaller();
-        return (Object)unmarshaller.unmarshal(sr);
+        return unmarshaller.unmarshal(sr);
     }
 
-    public static void saveObjectToXML(String filename, Class c, Object obj) throws Exception
+    static void saveObjectToXML(String filename, Class c, Object obj) throws Exception
     {
         JAXBContext context = JAXBContext.newInstance(c);
         Marshaller marshaller = context.createMarshaller();
         marshaller.marshal(obj, new FileOutputStream(filename));
     }
 
-    public double earningsTotal(String officiantSecondName, Calendar calendar)
+    double earningsTotal(String officiantSecondName, Calendar calendar)
     {
         double total = 0.0;
         Date comparingDate = Date.newInstance(calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.MONTH)+1, calendar.get(Calendar.YEAR), null);
@@ -54,12 +61,12 @@ public class XmlTask
             total += ord.totalcost;
         return total == 0.0 ? -1 : total;
     }
-    public void removeDay(Calendar calendar)
+    void removeDay(Calendar calendar)
     {
         int d = calendar.get(Calendar.DAY_OF_MONTH);
         restaurant.date.remove(restaurant.getDate(Date.newInstance(calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.MONTH)+1, calendar.get(Calendar.YEAR), null)));
     }
-    public void changeOfficiantName(String oldFirstName, String oldSecondName, String newFirstName, String newSecondName)
+    void changeOfficiantName(String oldFirstName, String oldSecondName, String newFirstName, String newSecondName)
     {
         for(Date date : restaurant.date)
             for(Order order : date.order)
