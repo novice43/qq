@@ -1,8 +1,12 @@
 package PO63.Kotikov.wdad.data.managers;
 
+import PO63.Kotikov.wdad.utils.RegistryInfo;
+import org.w3c.dom.Document;
+
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
+import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.FileOutputStream;
 import java.io.StringReader;
 import java.nio.file.Files;
@@ -11,9 +15,11 @@ import java.util.List;
 
 public class PreferencesManager
 {
-    private static Properties activeProperties;
+    private Properties activeProperties;
 
-    protected static Appconfig rootElement;
+    private String filename;
+
+    private static Appconfig rootElement;
 
     protected final static PreferencesManager instance = new PreferencesManager();
 
@@ -22,7 +28,7 @@ public class PreferencesManager
         StringReader sr = new StringReader(new String(Files.readAllBytes(Paths.get(filename))));
         JAXBContext context = JAXBContext.newInstance(c);
         Unmarshaller unmarshaller = context.createUnmarshaller();
-        return (Object) unmarshaller.unmarshal(sr);
+        return unmarshaller.unmarshal(sr);
     }
 
     private static void saveObjectToXML(String filename, Class c, Object obj) throws Exception
@@ -34,8 +40,9 @@ public class PreferencesManager
 
     public void readXml(String filename) throws Exception
     {
-        rootElement = (Appconfig) loadObjectFromXML(filename, Rmi.class);
-        activeProperties = new Properties(rootElement);
+        rootElement = (Appconfig) loadObjectFromXML(filename, Appconfig.class);
+        activeProperties = new Properties(filename);
+        this.filename = filename;
     }
 
     @Deprecated
@@ -122,33 +129,92 @@ public class PreferencesManager
         return rootElement.rmi.client.usecodebaseonly;
     }
 
-    public void setProperty(String key, String value)
+    private void checkActiveProperties() throws Exception
     {
-
+        if(activeProperties == null) throw new Exception("Trying to set properties when they are not configured(NullPointer)");
     }
 
-    public String getProperty(String key)
+    public void setProperty(String key, String value) throws Exception
     {
-        return null;
+        checkActiveProperties();
+        activeProperties.setProperty(key, value);
+        saveFromDOM();
     }
 
-    public void setProperties(Properties prop)
+    public String getProperty(String key) throws Exception
     {
-
+        checkActiveProperties();
+        return activeProperties.getProperty(key);
     }
 
-    public Properties getProperties()
+    public void setProperties(Properties.InternalProperties prop) throws Exception
     {
-        return null;
+        checkActiveProperties();
+        activeProperties.setProperties(prop);
+        saveFromDOM();
     }
 
-    public void addBindedObject(String name, String className)
+    public Properties.InternalProperties getProperties() throws Exception
     {
-
+        checkActiveProperties();
+        return activeProperties.getProperties();
     }
 
-    public void removeBindedObject(String name)
+    public void addBindedObject(String name, String className, Registry registry) throws Exception
     {
-
+        Bindedobject obj = new Bindedobject();
+        obj.clazz = className;
+        obj.name = name;
+        RegistryInfo.parse(rootElement.rmi.server.registryOrBindedobject);
+        for(RegistryInfo info : RegistryInfo.registries)
+            if(info.registry.equals(registry))
+            {
+                info.lastIndex++;
+                rootElement.rmi.server.registryOrBindedobject.add(info.lastIndex, obj);
+                return;
+            }
+            saveFromInstance();
     }
+
+    public void removeBindedObject(String name) throws Exception
+    {
+        List<Object> collection = rootElement.rmi.server.registryOrBindedobject;
+        Object current;
+        for(int i = 0; i < collection.size(); i++)
+        {
+            current = collection.get(i);
+            if (current instanceof Bindedobject && ((Bindedobject) current).equalsByName(name))
+                collection.remove(i);
+        }
+        saveFromInstance();
+    }
+
+    private void saveFromDOM() throws Exception
+    {
+        activeProperties.save(filename);
+        updateData();
+    }
+
+    private void saveFromInstance() throws Exception
+    {
+        saveObjectToXML(filename, Appconfig.class, rootElement);
+        updateData();
+    }
+
+    private void updateData() throws Exception
+    {
+        rootElement = (Appconfig) loadObjectFromXML(filename, Appconfig.class);
+        activeProperties = new Properties(filename);
+    }
+
+    public String getFilename()
+    {
+        return filename;
+    }
+
+    public void setFilename(String filename)
+    {
+        this.filename = filename;
+    }
+
 }

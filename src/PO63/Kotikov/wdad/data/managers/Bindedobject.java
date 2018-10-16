@@ -23,7 +23,7 @@ public class Bindedobject {
     protected String name;
     @XmlAttribute(name = "class", required = true)
     @XmlJavaTypeAdapter(NormalizedStringAdapter.class)
-    protected String clazz;
+    String clazz;
 
     /**
      * Gets the value of the name property.
@@ -71,6 +71,11 @@ public class Bindedobject {
      */
     public void setClazz(String value) {
         this.clazz = value;
+    }
+
+    boolean equalsByName(String name)
+    {
+        return this.name.equals(name);
     }
 
 }

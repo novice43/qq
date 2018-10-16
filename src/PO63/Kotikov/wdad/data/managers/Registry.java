@@ -21,11 +21,11 @@ import javax.xml.bind.annotation.XmlType;
 public class Registry {
 
     @XmlElement(required = true)
-    protected String createregistry;
+    private String createregistry;
     @XmlElement(required = true)
-    protected String registryaddress;
+    private String registryaddress;
     @XmlElement(required = true)
-    protected String registryport;
+    private String registryport;
 
     /**
      * Gets the value of the createregistry property.
@@ -99,4 +99,17 @@ public class Registry {
         this.registryport = value;
     }
 
+    @Override
+    public boolean equals(Object obj)
+    {
+        return obj instanceof Registry && this.createregistry.equals(((Registry) obj).createregistry) &&
+                this.registryaddress.equals(((Registry) obj).registryaddress) &&
+                this.registryport.equals(((Registry) obj).registryport);
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return this.registryport.hashCode() ^ this.registryaddress.hashCode() ^ this.createregistry.hashCode();
+    }
 }
