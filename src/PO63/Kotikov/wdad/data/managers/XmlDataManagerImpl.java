@@ -1,19 +1,40 @@
 package PO63.Kotikov.wdad.data.managers;
 
 import java.rmi.RemoteException;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 public class XmlDataManagerImpl implements XmlDataManager
 {
 
     @Override
-    public void test() throws RemoteException
+    public double earningsTotal(String officiantSecondName, Calendar calendar) throws RemoteException
     {
-        System.out.println("tested string");
+        return 0;
     }
 
     @Override
-    public void Test(Integer innt) throws RemoteException
+    public void removeDay(Calendar calendar) throws RemoteException
     {
-        System.out.println(innt);
+
+    }
+
+    @Override
+    public void changeOfficiantName(String oldFirstName, String oldSecondName, String newFirstName, String newSecondName) throws RemoteException
+    {
+
+    }
+
+    @Override
+    public List<Integer> getOrders(Date date) throws RemoteException
+    {
+        return null;
+    }
+
+    @Override
+    public Date lastOfficiantWorkDate(Integer officiant) throws RemoteException
+    {
+        return null;
     }
 }

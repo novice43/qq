@@ -13,15 +13,15 @@ public class Client
 
     private static final String CONFIG_FILE = "config.xml";
 
-    private static Registry rmiRegistry;
+    private Registry rmiRegistry;
 
-    private static XmlDataManager stub;
+    private XmlDataManager stub;
 
-    private static XmlDataManagerImpl xmlDataManagerImpl;
+    private XmlDataManagerImpl xmlDataManagerImpl;
 
     private static final String remoteObjectName = "XmlDataManagerImpl";
 
-    public static void main(String[] args) throws Exception
+    public void main(String[] args) throws Exception
     {
         preferencesManager.readXml(CONFIG_FILE);
         Properties.InternalProperties properties = preferencesManager.getProperties();
@@ -31,8 +31,6 @@ public class Client
             XmlDataManager remoteObject = (XmlDataManager)rmiRegistry.lookup(remoteObjectName);
             RegistryInfo.parse(PreferencesManager.getRmi(preferencesManager.getRootElement()).getServer().getRegistryOrBindedobject());
             remoteObject = (XmlDataManager)rmiRegistry.lookup(((Bindedobject)RegistryInfo.registries.get(0).bindedObjects.get(0)).getName());
-            remoteObject.test();
-            remoteObject.Test(123);
         }
         catch (Exception ex)
         {

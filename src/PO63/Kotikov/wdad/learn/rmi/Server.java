@@ -16,15 +16,15 @@ public class Server
 
     private static final String CONFIG_FILE = "config.xml";
 
-    private static Registry rmiRegistry;
+    private Registry rmiRegistry;
 
-    private static XmlDataManager stub;
+    private XmlDataManager stub;
 
-    private static XmlDataManagerImpl xmlDataManagerImpl;
+    private  XmlDataManagerImpl xmlDataManagerImpl;
 
     private static final String remoteObjectName = "XmlDataManagerImpl";
 
-    public static void main(String[] args) throws Exception
+    public void main(String[] args) throws Exception
     {
         preferencesManager.readXml(CONFIG_FILE);
         Properties.InternalProperties properties = preferencesManager.getProperties();
