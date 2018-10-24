@@ -188,6 +188,8 @@ public class Properties
     public void save() throws Exception
     {
         if(filename != null) save(filename);
+        else
+            throw new Exception("Don't know where to save properties. Filename is null");
     }
 
     public String getFilename()
