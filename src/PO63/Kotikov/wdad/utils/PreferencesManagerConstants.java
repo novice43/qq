@@ -3,6 +3,7 @@ package PO63.Kotikov.wdad.utils;
 public interface PreferencesManagerConstants
 {
     String CLASS_PROVIDER = "appconfig.rmi.classprovider";
+    String RMI = "appconfig.rmi";
     String POLICY_PATH = "appconfig.rmi.client.policypath";
     String USE_CODE_BASE_ONLY = "appconfig.rmi.client.usecodebaseonly";
     String CREATE_REGISTRY = "appconfig.rmi.server.registry.createregistry";

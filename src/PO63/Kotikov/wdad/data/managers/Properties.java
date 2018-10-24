@@ -3,7 +3,9 @@ package PO63.Kotikov.wdad.data.managers;
 import PO63.Kotikov.wdad.utils.PreferencesManagerConstants;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
+import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
@@ -17,6 +19,7 @@ import javax.xml.xpath.XPathFactory;
 
 import java.io.File;
 import java.lang.reflect.Field;
+import java.util.List;
 
 public class Properties
 {
@@ -112,7 +115,10 @@ public class Properties
 
     Properties(String filename) throws Exception
     {
-        document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(filename);
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+        File f = new File(filename);
+        document = documentBuilder.parse(f);
         this.filename = filename;
     }
 
@@ -136,22 +142,35 @@ public class Properties
      * @return node by key
      * @throws Exception If document was not loaded
      */
+    private String getNodeValue(String key) throws Exception
+    {
+        checkDocument();
+        return (String)xpath.evaluate("/" + key.replace('.', '/'), document, XPathConstants.STRING);
+    }
+
+    private NodeList getNodeSet(String key) throws Exception
+    {
+        checkDocument();
+        return (NodeList)xpath.evaluate("/" + key.replace('.', '/'), document, XPathConstants.NODESET);
+    }
+
     private Node getNode(String key) throws Exception
     {
         checkDocument();
-        return (Node)xpath.evaluate(key.replace('.', '/'), document, XPathConstants.NODE);
+        return (Node)xpath.evaluate("/" + key.replace('.', '/'), document, XPathConstants.NODE);
     }
 
     String getProperty(String key) throws Exception
     {
         validateKey(key);
-        return getNode(key).getNodeValue();
+        return getNodeValue(key);
     }
 
     void setProperty(String key, String value) throws Exception
     {
         validateKey(key);
-        getNode(key).setNodeValue(value);
+        Node n = getNode(key);
+        n.setNodeValue(value);
     }
 
     void setProperties(InternalProperties properties) throws Exception

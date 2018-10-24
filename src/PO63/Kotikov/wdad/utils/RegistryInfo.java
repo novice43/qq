@@ -13,12 +13,12 @@ public class RegistryInfo
     public Registry registry;//Registry by its startIndex
     public List<Object> bindedObjects = new ArrayList<>();
 
-    private RegistryInfo(int startIndex, Registry registry) throws Exception
+    private RegistryInfo(int startIndex, Registry registry, int lastIndex) throws Exception
     {
         if(registry == null) throw new Exception("Null registry cannot be added to registry list");
         this.startIndex = startIndex;
         this.registry = registry;
-        this.lastIndex = -1;
+        this.lastIndex = lastIndex;
     }
 
     /**
@@ -36,10 +36,13 @@ public class RegistryInfo
             if(current instanceof Registry)
             {
                 if(registries.size() > 0) registries.get(registries.size()-1).lastIndex = i-1;
-                registries.add(new RegistryInfo(i, (Registry) current));
+                registries.add(new RegistryInfo(i, (Registry) current, i));
             }
             else
-                registries.get(registries.size()-1).bindedObjects.add(current);
+            {
+                registries.get(registries.size() - 1).bindedObjects.add(current);
+                registries.get(registries.size()-1).lastIndex = i;
+            }
         }
     }
 }

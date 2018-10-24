@@ -176,9 +176,9 @@ public class PreferencesManager
             {
                 info.lastIndex++;
                 rootElement.rmi.server.registryOrBindedobject.add(info.lastIndex, obj);
+                saveFromInstance();
                 return;
             }
-            saveFromInstance();
     }
 
     public void removeBindedObject(String name) throws Exception

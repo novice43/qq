@@ -31,6 +31,8 @@ public class Client
             XmlDataManager remoteObject = (XmlDataManager)rmiRegistry.lookup(remoteObjectName);
             RegistryInfo.parse(PreferencesManager.getRmi(preferencesManager.getRootElement()).getServer().getRegistryOrBindedobject());
             remoteObject = (XmlDataManager)rmiRegistry.lookup(((Bindedobject)RegistryInfo.registries.get(0).bindedObjects.get(0)).getName());
+            remoteObject.test();
+            remoteObject.Test(123);
         }
         catch (Exception ex)
         {
