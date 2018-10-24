@@ -11,6 +11,7 @@ public class RegistryInfo
     private int startIndex;//Index in global registry list
     public int lastIndex;
     public Registry registry;//Registry by its startIndex
+    public List<Object> bindedObjects = new ArrayList<>();
 
     private RegistryInfo(int startIndex, Registry registry) throws Exception
     {
@@ -23,7 +24,7 @@ public class RegistryInfo
     /**
      * Pushing registry and its indices in list. If lastIndex == -1 that means real lastIndex points to the end of the list
      * @param objects list of some objects where are some registries
-     * @throws Exception something go wrong like nullpointer etc...
+     * @throws Exception something went wrong like nullpointer etc...
      */
     public static void parse(List<Object> objects) throws Exception
     {
@@ -37,6 +38,8 @@ public class RegistryInfo
                 if(registries.size() > 0) registries.get(registries.size()-1).lastIndex = i-1;
                 registries.add(new RegistryInfo(i, (Registry) current));
             }
+            else
+                registries.get(registries.size()-1).bindedObjects.add(current);
         }
     }
 }

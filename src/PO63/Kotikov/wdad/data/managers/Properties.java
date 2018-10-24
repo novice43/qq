@@ -24,19 +24,19 @@ public class Properties
     {
         private String classProvider;
         private String policyPath;
-        private String useCodeBaseOnly;
-        private String createRegistry;
+        private boolean useCodeBaseOnly;
+        private boolean createRegistry;
         private String registryAddress;
-        private String registryPort;
+        private int registryPort;
 
         InternalProperties(String classProvider, String policyPath, String useCodeBaseOnly, String createRegistry, String registryAddress, String registryPort)
         {
             this.classProvider = classProvider;
             this.policyPath = policyPath;
-            this.useCodeBaseOnly = useCodeBaseOnly;
-            this.createRegistry = createRegistry;
+            this.useCodeBaseOnly = useCodeBaseOnly.toLowerCase().equals("yes");
+            this.createRegistry = createRegistry.toLowerCase().equals("yes");
             this.registryAddress = registryAddress;
-            this.registryPort = registryPort;
+            this.registryPort = Integer.parseInt(registryPort);
         }
 
         public String getClassProvider()
@@ -59,22 +59,22 @@ public class Properties
             this.policyPath = policyPath;
         }
 
-        public String getUseCodeBaseOnly()
+        public boolean getUseCodeBaseOnly()
         {
             return useCodeBaseOnly;
         }
 
-        public void setUseCodeBaseOnly(String useCodeBaseOnly)
+        public void setUseCodeBaseOnly(boolean useCodeBaseOnly)
         {
             this.useCodeBaseOnly = useCodeBaseOnly;
         }
 
-        public String getCreateRegistry()
+        public boolean getCreateRegistry()
         {
             return createRegistry;
         }
 
-        public void setCreateRegistry(String createRegistry)
+        public void setCreateRegistry(boolean createRegistry)
         {
             this.createRegistry = createRegistry;
         }
@@ -89,12 +89,12 @@ public class Properties
             this.registryAddress = registryAddress;
         }
 
-        public String getRegistryPort()
+        public int getRegistryPort()
         {
             return registryPort;
         }
 
-        public void setRegistryPort(String registryPort)
+        public void setRegistryPort(int registryPort)
         {
             this.registryPort = registryPort;
         }
@@ -158,10 +158,10 @@ public class Properties
     {
         if(properties.classProvider != null) setProperty(PreferencesManagerConstants.CLASS_PROVIDER, properties.classProvider);
         if(properties.policyPath != null) setProperty(PreferencesManagerConstants.POLICY_PATH, properties.policyPath);
-        if(properties.useCodeBaseOnly != null) setProperty(PreferencesManagerConstants.USE_CODE_BASE_ONLY, properties.useCodeBaseOnly);
-        if(properties.createRegistry != null) setProperty(PreferencesManagerConstants.CREATE_REGISTRY, properties.createRegistry);
+        setProperty(PreferencesManagerConstants.USE_CODE_BASE_ONLY, properties.useCodeBaseOnly ? "yes" : "no");
+        setProperty(PreferencesManagerConstants.CREATE_REGISTRY, properties.createRegistry ? "yes" : "no");
         if(properties.registryAddress != null) setProperty(PreferencesManagerConstants.REGISTRY_ADDRESS, properties.registryAddress);
-        if(properties.registryPort != null) setProperty(PreferencesManagerConstants.REGISTRY_PORT, properties.registryPort);
+        setProperty(PreferencesManagerConstants.REGISTRY_PORT, String.valueOf(properties.registryPort));
     }
 
     InternalProperties getProperties() throws Exception

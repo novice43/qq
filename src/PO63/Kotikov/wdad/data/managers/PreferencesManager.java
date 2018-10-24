@@ -19,9 +19,9 @@ public class PreferencesManager
 
     private String filename;
 
-    private static Appconfig rootElement;
+    private Appconfig rootElement;
 
-    protected final static PreferencesManager instance = new PreferencesManager();
+    public final static PreferencesManager instance = new PreferencesManager();
 
     private static Object loadObjectFromXML(String filename, Class c) throws Exception
     {
@@ -43,6 +43,11 @@ public class PreferencesManager
         rootElement = (Appconfig) loadObjectFromXML(filename, Appconfig.class);
         activeProperties = new Properties(filename);
         this.filename = filename;
+    }
+
+    public Appconfig getRootElement()
+    {
+        return rootElement;
     }
 
     @Deprecated
