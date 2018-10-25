@@ -91,10 +91,10 @@ public class Properties
         {
             this.registryAddress = registryAddress;
         }
-
         public int getRegistryPort()
         {
             return registryPort;
+
         }
 
         public void setRegistryPort(int registryPort)
@@ -170,7 +170,7 @@ public class Properties
     {
         validateKey(key);
         Node n = getNode(key);
-        n.setNodeValue(value);
+        n.setTextContent(value);
     }
 
     void setProperties(InternalProperties properties) throws Exception

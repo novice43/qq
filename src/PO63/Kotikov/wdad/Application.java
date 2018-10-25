@@ -1,6 +1,8 @@
 package PO63.Kotikov.wdad;
 
+import PO63.Kotikov.wdad.data.managers.PreferencesManager;
 import PO63.Kotikov.wdad.learn.rmi.*;
+import PO63.Kotikov.wdad.utils.PreferencesManagerConstants;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -11,6 +13,7 @@ public class Application
     private static String test = "got";
     public static void main(String[] args) throws Exception
     {
+        /*
         System.out.println("I'm Kostya Kotikov, and I'm not a monkey");
         Server server = new Server();
         server.main(null);
@@ -27,5 +30,12 @@ public class Application
         items.add(new Item("Requiem for a fish", 1));
         orderList.add(new Order(second, items));
         Date currentDates = new Date(java.sql.Date.valueOf(LocalDate.of(2016, 10, 2)), orderList);
+        */
+        PreferencesManager manager = PreferencesManager.instance;
+
+        manager.readXml("out/production/starting-monkey-to-human-path/PO63/Kotikov/wdad/resources/configuration/appconfig.xml");
+        System.out.println(manager.getProperty(PreferencesManagerConstants.CLASS_PROVIDER));
+        manager.setProperty(PreferencesManagerConstants.CLASS_PROVIDER, "blablabla");
+        System.out.println(manager.getProperty(PreferencesManagerConstants.CLASS_PROVIDER));
     }
 }
