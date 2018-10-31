@@ -35,7 +35,7 @@ public class Application
 
         manager.readXml("out/production/starting-monkey-to-human-path/PO63/Kotikov/wdad/resources/configuration/appconfig.xml");
         System.out.println(manager.getProperty(PreferencesManagerConstants.CLASS_PROVIDER));
-        manager.setProperty(PreferencesManagerConstants.CLASS_PROVIDER, "blablabla");
+        manager.setProperty(PreferencesManagerConstants.CLASS_PROVIDER, "bosef");
         System.out.println(manager.getProperty(PreferencesManagerConstants.CLASS_PROVIDER));
     }
 }

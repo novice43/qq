@@ -1,16 +1,15 @@
 package PO63.Kotikov.wdad.data.managers;
 
 import PO63.Kotikov.wdad.utils.PreferencesManagerConstants;
+import PO63.Kotikov.wdad.utils.RegistryInfo;
 import org.w3c.dom.Document;
+import org.w3c.dom.DocumentType;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.Result;
-import javax.xml.transform.Source;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.xpath.XPath;
@@ -116,9 +115,12 @@ public class Properties
     Properties(String filename) throws Exception
     {
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        documentBuilderFactory.setIgnoringElementContentWhitespace(true);
+        //documentBuilderFactory.setIgnoringComments(true);
         DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
         File f = new File(filename);
         document = documentBuilder.parse(f);
+        RegistryInfo.parse(document);
         this.filename = filename;
     }
 
@@ -169,8 +171,7 @@ public class Properties
     void setProperty(String key, String value) throws Exception
     {
         validateKey(key);
-        Node n = getNode(key);
-        n.setTextContent(value);
+        getNode(key).setTextContent(value);
     }
 
     void setProperties(InternalProperties properties) throws Exception
@@ -199,6 +200,11 @@ public class Properties
     {
         if(filename == null) throw new Exception("Filename was not set");
         Transformer transformer = TransformerFactory.newInstance().newTransformer();
+        DocumentType docType = document.getDoctype();
+        //String systemId = docType.getSystemId(), publicId = docType.getPublicId();
+        //String res = publicId + "\" \"" + systemId;
+        //transformer.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM, docType.getInternalSubset());
+        //transformer.setOutputProperty (OutputKeys.DOCTYPE_PUBLIC, docType.getInternalSubset());
         Result out = new StreamResult(new File(filename));
         Source in = new DOMSource(document);
         transformer.transform(in, out);
