@@ -1,7 +1,6 @@
-import PO63.Kotikov.wdad.learn.rmi.Officiant;
+import PO63.Kotikov.wdad.learn.xml.*;
 
-import java.sql.Date;
-import java.time.LocalDate;
+import java.util.List;
 
 public class Client
 {
@@ -9,10 +8,14 @@ public class Client
     {
         PO63.Kotikov.wdad.learn.rmi.Client client = new PO63.Kotikov.wdad.learn.rmi.Client();
         client.main(null);
-        client.getRemoteObject().changeOfficiantName(new Officiant("Test", "Quest"), new Officiant("jack", "black"));
-        client.getRemoteObject().earningsTotal(new Officiant("kek", "pek"), Date.valueOf(LocalDate.of(2010, 12, 1)));
-        client.getRemoteObject().getOrders(Date.valueOf(LocalDate.of(2010, 12, 1)));
-        client.getRemoteObject().lastOfficiantWorkDate(new Officiant("kek", "pek"));
-        client.getRemoteObject().removeDay(Date.valueOf(LocalDate.of(2010, 12, 1)));
+        Officiant s = Officiant.newInstance("petya", "petrov");
+        client.getRemoteObject().changeOfficiantName(Officiant.newInstance("Test", "Quest"), Officiant.newInstance("jack", "black"));
+        System.out.println(client.getRemoteObject().earningsTotal(s, Date.newInstance(7, 12, 2006, null).getDate()));
+        List<Order> oo = client.getRemoteObject().getOrders(Date.newInstance(7, 12, 2006, null));
+        for(Order o : oo)
+            System.out.println(o.toString());
+        client.getRemoteObject().lastOfficiantWorkDate(s);
+        client.getRemoteObject().removeDay(Date.newInstance(7, 12, 2006, null).getDate());
+        client.getRemoteObject().save();
     }
 }

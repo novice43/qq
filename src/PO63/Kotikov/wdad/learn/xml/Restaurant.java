@@ -1,6 +1,7 @@
 
 package PO63.Kotikov.wdad.learn.xml;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -17,7 +18,8 @@ import javax.xml.bind.annotation.XmlType;
     "date"
 })
 @XmlRootElement(name = "restaurant")
-public class Restaurant {
+public class Restaurant implements Serializable
+{
 
     protected List<Date> date;
 

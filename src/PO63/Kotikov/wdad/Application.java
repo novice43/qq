@@ -13,11 +13,10 @@ public class Application
     private static String test = "got";
     public static void main(String[] args) throws Exception
     {
-        /*
         System.out.println("I'm Kostya Kotikov, and I'm not a monkey");
         Server server = new Server();
         server.main(null);
-        List<Order> orderList = new ArrayList<>();
+        /*List<Order> orderList = new ArrayList<>();
         Officiant first = new Officiant("Test", "Quest");
         Officiant second = new Officiant("Math", "Sucks");
         List<Item> items = new ArrayList<>();
@@ -29,13 +28,6 @@ public class Application
         items = new ArrayList<>(items);
         items.add(new Item("Requiem for a fish", 1));
         orderList.add(new Order(second, items));
-        Date currentDates = new Date(java.sql.Date.valueOf(LocalDate.of(2016, 10, 2)), orderList);
-        */
-        PreferencesManager manager = PreferencesManager.instance;
-
-        manager.readXml("out/production/starting-monkey-to-human-path/PO63/Kotikov/wdad/resources/configuration/appconfig.xml");
-        System.out.println(manager.getProperty(PreferencesManagerConstants.CLASS_PROVIDER));
-        manager.setProperty(PreferencesManagerConstants.CLASS_PROVIDER, "bosef");
-        System.out.println(manager.getProperty(PreferencesManagerConstants.CLASS_PROVIDER));
+        Date currentDates = new Date(java.sql.Date.valueOf(LocalDate.of(2016, 10, 2)), orderList);*/
     }
 }

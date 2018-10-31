@@ -3,6 +3,8 @@ package PO63.Kotikov.wdad.learn.xml;
 
 import com.sun.xml.internal.bind.AnyTypeAdapter;
 
+import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -24,17 +26,15 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
     "order"
 })
 @XmlRootElement(name = "date")
-public class Date {
+public class Date implements Serializable
+{
     //todo day, moth, year - сделай тип int, JAXB прекрасно конвертит примитивы в String и наоборот. Работа с примитивами сильно упростит твои проверки DONE
     @XmlAttribute(name = "day", required = true)
-    @XmlJavaTypeAdapter(IntTypeAdapter.class)
-    protected Integer day;
+    protected int day;
     @XmlAttribute(name = "month", required = true)
-    @XmlJavaTypeAdapter(IntTypeAdapter.class)
-    protected Integer month;
+    protected int month;
     @XmlAttribute(name = "year", required = true)
-    @XmlJavaTypeAdapter(IntTypeAdapter.class)
-    protected Integer year;
+    protected int year;
     protected List<Order> order;
 
     public static Date newInstance(int day, int month, int year, List<Order> order)
@@ -177,5 +177,54 @@ public class Date {
             if(order.getOfficiant().secondname.equals(officiantSecondName))
                 officiantsOrder.add(order);
         return officiantsOrder;
+    }
+
+    public static List<Order> getOrdersByDate(Date date, List<Date> dates)
+    {
+        for(Date currentDate : dates)
+            if(currentDate.equalsByDate(date))
+                return currentDate.getOrder();
+        return new ArrayList<>();
+    }
+
+    public static boolean removeDate(Date day, List<Date> dates)
+    {
+        for(int i = 0; i < dates.size(); i++)
+        {
+            if (dates.get(i).equalsByDate(day))
+            {
+                dates.remove(i);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public java.util.Date getDate()
+    {
+        java.util.Date d = java.sql.Date.valueOf(LocalDate.of(year, month, day));
+        return d;
+    }
+
+    public static List<Date> getDatesByOfficiant(Officiant officiant, List<Date> dates)
+    {
+        List<Date> dateList = new ArrayList<>();
+        for (Date date : dates)
+        {
+            for (Order order : date.order)
+            {
+                if (order.officiant.equals(officiant))
+                {
+                    dateList.add(date);
+                }
+            }
+        }
+        return dateList;
+    }
+
+    @Override
+    public String toString()
+    {
+        return day + "." + month + "." + year;
     }
 }

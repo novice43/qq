@@ -1,6 +1,7 @@
 
 package PO63.Kotikov.wdad.learn.xml;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -19,7 +20,8 @@ import javax.xml.bind.annotation.XmlType;
     "totalcost"
 })
 @XmlRootElement(name = "order")
-public class Order {
+public class Order implements Serializable
+{
 
     protected Officiant officiant;
     protected List<Item> item;
@@ -103,4 +105,14 @@ public class Order {
         this.totalcost = value;
     }
 
+    @Override
+    public String toString()
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Officiant: ").append(officiant.firstname).append(" ").append(officiant.secondname);
+        for(Item i : item)
+            sb.append("\n").append(i.name).append(" : ").append(i.cost);
+        sb.append("\n").append("TOTAL: ").append(totalcost);
+        return sb.toString();
+    }
 }

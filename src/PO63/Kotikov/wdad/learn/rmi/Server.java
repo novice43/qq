@@ -4,6 +4,7 @@ import PO63.Kotikov.wdad.data.managers.PreferencesManager;
 import PO63.Kotikov.wdad.data.managers.Properties;
 import PO63.Kotikov.wdad.data.managers.XmlDataManager;
 import PO63.Kotikov.wdad.data.managers.XmlDataManagerImpl;
+import PO63.Kotikov.wdad.learn.xml.XmlTask;
 import PO63.Kotikov.wdad.utils.RegistryInfo;
 
 import java.rmi.registry.LocateRegistry;
@@ -14,7 +15,7 @@ public class Server
 {
     private static PreferencesManager preferencesManager = PreferencesManager.instance;
 
-    private static final String CONFIG_FILE = "config.xml";
+    private static final String CONFIG_FILE = "appconfig.xml";
 
     private Registry rmiRegistry;
 
@@ -32,10 +33,11 @@ public class Server
         {
             rmiRegistry = properties.getCreateRegistry() ? LocateRegistry.createRegistry(properties.getRegistryPort()) : LocateRegistry.getRegistry(properties.getRegistryAddress(), properties.getRegistryPort());
             xmlDataManagerImpl = new XmlDataManagerImpl();
+            xmlDataManagerImpl.init();
             stub = (XmlDataManager) UnicastRemoteObject.exportObject(xmlDataManagerImpl, 0);
             rmiRegistry.bind(remoteObjectName, stub);
             RegistryInfo.parse(PreferencesManager.getRmi(preferencesManager.getRootElement()).getServer().getRegistryOrBindedobject());
-            preferencesManager.addBindedObject(remoteObjectName, stub.getClass().getCanonicalName(), RegistryInfo.registries.get(0).registry);//How todo?
+            preferencesManager.addBindedObject(remoteObjectName, stub.getClass().getCanonicalName(), RegistryInfo.registries.get(0).registry);
         }
         catch (Exception ex)
         {

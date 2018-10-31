@@ -9,6 +9,7 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
 import javax.xml.bind.annotation.adapters.NormalizedStringAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import java.io.Serializable;
 
 
 /**
@@ -17,7 +18,8 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "")
 @XmlRootElement(name = "officiant")
-public class Officiant {
+public class Officiant implements Serializable
+{
 
     @XmlAttribute(name = "firstname")
     @XmlJavaTypeAdapter(NormalizedStringAdapter.class)
@@ -72,6 +74,14 @@ public class Officiant {
      */
     public void setSecondname(String value) {
         this.secondname = value;
+    }
+
+    public static Officiant newInstance(String firstname, String secondname)
+    {
+        Officiant o = new Officiant();
+        o.firstname = firstname;
+        o.secondname = secondname;
+        return o;
     }
 
 }

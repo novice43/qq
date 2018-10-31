@@ -11,7 +11,7 @@ public class Client
 {
     private static PreferencesManager preferencesManager = PreferencesManager.instance;
 
-    private static final String CONFIG_FILE = "config.xml";
+    private static final String CONFIG_FILE = "appconfig.xml";
 
     private Registry rmiRegistry;
 

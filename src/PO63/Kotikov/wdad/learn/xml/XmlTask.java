@@ -26,13 +26,14 @@ public class XmlTask
 
     private Restaurant restaurant;
 
-    XmlTask() throws Exception
+    public XmlTask() throws Exception
     {
         restaurant = (Restaurant)loadObjectFromXML("rest.xml", Restaurant.class);
     }
 
     static Object loadObjectFromXML(String filename, Class c) throws Exception
     {
+        System.setProperty("javax.xml.accessExternalDTD", "all");
         StringReader sr = new StringReader(new String(Files.readAllBytes(Paths.get(filename))));
         JAXBContext context = JAXBContext.newInstance(c);
         Unmarshaller unmarshaller = context.createUnmarshaller();
@@ -50,6 +51,7 @@ public class XmlTask
     {
         double total = 0.0;
         Date comparingDate = Date.newInstance(calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.MONTH)+1, calendar.get(Calendar.YEAR), null);
+        System.out.println(comparingDate.toString());
         for(Order ord : restaurant.getDate(comparingDate).getOrdersByOfficiantSecondName(officiantSecondName))
             total += ord.totalcost;
         return total == 0.0 ? -1 : total;
@@ -69,4 +71,6 @@ public class XmlTask
                     order.officiant.secondname = newSecondName;
                 }
     }
+
+
 }
