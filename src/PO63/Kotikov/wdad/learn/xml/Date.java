@@ -179,6 +179,7 @@ public class Date implements Serializable
         return officiantsOrder;
     }
 
+    //todo переносим в restaurant
     public static List<Order> getOrdersByDate(Date date, List<Date> dates)
     {
         for(Date currentDate : dates)
@@ -186,7 +187,7 @@ public class Date implements Serializable
                 return currentDate.getOrder();
         return new ArrayList<>();
     }
-
+    //todo переносим в restaurant
     public static boolean removeDate(Date day, List<Date> dates)
     {
         for(int i = 0; i < dates.size(); i++)
@@ -205,7 +206,7 @@ public class Date implements Serializable
         java.util.Date d = java.sql.Date.valueOf(LocalDate.of(year, month, day));
         return d;
     }
-
+    //todo переносим в restaurant
     public static List<Date> getDatesByOfficiant(Officiant officiant, List<Date> dates)
     {
         List<Date> dateList = new ArrayList<>();

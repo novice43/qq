@@ -47,15 +47,19 @@ public class XmlDataManagerImpl implements XmlDataManager, Serializable
         task.changeOfficiantName(oldOfficiant.getFirstname(), oldOfficiant.getSecondname(), newOfficiant.getFirstname(), newOfficiant.getSecondname());
     }
 
+    //todo параметр - как и везде java.util.Date
     @Override
     public List<Order> getOrders(Date date) throws RemoteException
     {
+        //todo сделай метод в xmlTask и вызывай его здесь
         return Date.getOrdersByDate(Date.newInstance(date.getDay(), date.getMonth(), date.getYear(), null), task.getRestaurant().getDate());
     }
 
+    //todo возвращаем java.util.Date
     @Override
     public Date lastOfficiantWorkDate(Officiant officiant) throws RemoteException
     {
+        //todo сделай метод в xmlTask и вызывай его здесь
         List<Date> dates = Date.getDatesByOfficiant(officiant, task.getRestaurant().getDate());
         List<Long> ret = new ArrayList<>();
         dates.forEach((a) -> {

@@ -64,6 +64,7 @@ public class XmlTask
     public void changeOfficiantName(String oldFirstName, String oldSecondName, String newFirstName, String newSecondName)
     {
         for(Date date : restaurant.date)
+            //todo Я ТЕБЯ НЕНАВИЖУ!
             for(Order order : date.order)
                 if(order.officiant.firstname.equals(oldFirstName) && order.officiant.secondname.equals(oldSecondName))
                 {
