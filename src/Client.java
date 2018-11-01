@@ -11,7 +11,7 @@ public class Client
         Officiant s = Officiant.newInstance("petya", "petrov");
         client.getRemoteObject().changeOfficiantName(Officiant.newInstance("Test", "Quest"), Officiant.newInstance("jack", "black"));
         System.out.println(client.getRemoteObject().earningsTotal(s, Date.newInstance(7, 12, 2006, null).getDate()));
-        List<Order> oo = client.getRemoteObject().getOrders(Date.newInstance(7, 12, 2006, null));
+        List<Order> oo = client.getRemoteObject().getOrders(Date.newInstance(7, 12, 2006, null).getDate());
         for(Order o : oo)
             System.out.println(o.toString());
         client.getRemoteObject().lastOfficiantWorkDate(s);

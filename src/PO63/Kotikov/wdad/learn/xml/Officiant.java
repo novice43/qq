@@ -84,4 +84,13 @@ public class Officiant implements Serializable
         return o;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof Officiant && ((Officiant) obj).firstname.equals(this.firstname) && ((Officiant) obj).secondname.equals(secondname);
+    }
+
+    @Override
+    public int hashCode() {
+        return firstname.hashCode() ^ secondname.hashCode();
+    }
 }

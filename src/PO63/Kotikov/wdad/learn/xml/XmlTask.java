@@ -14,6 +14,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.Security;
 import java.util.Calendar;
+import java.util.List;
 
 import static java.security.Security.getProperty;
 
@@ -26,9 +27,12 @@ public class XmlTask
 
     private Restaurant restaurant;
 
-    public XmlTask() throws Exception
+    private String filename;
+
+    public XmlTask(String filename) throws Exception
     {
-        restaurant = (Restaurant)loadObjectFromXML("rest.xml", Restaurant.class);
+        this.filename = filename;
+        restaurant = (Restaurant)loadObjectFromXML(filename, Restaurant.class);
     }
 
     static Object loadObjectFromXML(String filename, Class c) throws Exception
@@ -61,17 +65,32 @@ public class XmlTask
         int d = calendar.get(Calendar.DAY_OF_MONTH);
         restaurant.date.remove(restaurant.getDate(Date.newInstance(calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.MONTH)+1, calendar.get(Calendar.YEAR), null)));
     }
-    public void changeOfficiantName(String oldFirstName, String oldSecondName, String newFirstName, String newSecondName)
+    public void changeOfficiantName(Officiant oldName, Officiant newName)
     {
-        for(Date date : restaurant.date)
-            //todo Я ТЕБЯ НЕНАВИЖУ!
-            for(Order order : date.order)
-                if(order.officiant.firstname.equals(oldFirstName) && order.officiant.secondname.equals(oldSecondName))
-                {
-                    order.officiant.firstname = newFirstName;
-                    order.officiant.secondname = newSecondName;
-                }
+        restaurant.changeOfficiantName(oldName, newName);
     }
 
+    public void save() throws Exception
+    {
+        XmlTask.saveObjectToXML(filename, Restaurant.class, restaurant);
+    }
 
+    public List<Order> getOrders(java.util.Date date)
+    {
+        return restaurant.getOrders(date);
+    }
+
+    public java.util.Date lastOfficiantWorkDate(Officiant officiant)
+    {
+        java.util.Date current;
+        List<java.util.Date> d = restaurant.getDatesByOfficiantUtilDate(officiant);
+        if(d != null && d.size() != 0) current = d.get(0);
+        else return null;
+        for(java.util.Date date : d)
+        {
+            if(date.after(current))
+                current = date;
+        }
+        return current;
+    }
 }

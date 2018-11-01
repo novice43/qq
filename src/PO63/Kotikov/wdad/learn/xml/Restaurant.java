@@ -3,6 +3,7 @@ package PO63.Kotikov.wdad.learn.xml;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -60,5 +61,65 @@ public class Restaurant implements Serializable
                 return date;
         }
         return null;
+    }
+
+    //todo переносим в restaurant DONE
+    public List<Date> getDatesByOfficiant(Officiant officiant)
+    {
+        List<Date> dateList = new ArrayList<>();
+        for (Date d : date)
+            if(d.hasSomeOrdersByOfficiant(officiant))
+                dateList.add(d);
+        return dateList;
+    }
+
+    public List<java.util.Date> getDatesByOfficiantUtilDate(Officiant officiant)
+    {
+        List<java.util.Date> dateList = new ArrayList<>();
+        for (Date d : getDatesByOfficiant(officiant))
+            dateList.add(d.getDate());
+        return dateList;
+    }
+
+    public void changeOfficiantName(Officiant oldName, Officiant newName)
+    {
+        for(Date d : date)
+            //todo Я ТЕБЯ НЕНАВИЖУ! DONE. I HATE YOU TOO
+            d.updateOfficiantName(oldName, newName);
+    }
+
+    public List<Order> getOrders(java.util.Date date)
+    {
+        List<Order> result = new ArrayList<>();
+        for(Date d : this.date)
+        {
+            if(d.equalsByDate(date))
+            {
+                result.addAll(d.order);
+                return result;
+            }
+        }
+        return null;
+    }
+
+    public List<Order> getOrdersByDate(Date date)
+    {
+        for(Date currentDate : this.date)
+            if(currentDate.equalsByDate(date))
+                return currentDate.getOrder();
+        return new ArrayList<>();
+    }
+
+    public boolean removeDate(Date day)
+    {
+        for(int i = 0; i < date.size(); i++)
+        {
+            if (date.get(i).equalsByDate(day))
+            {
+                date.remove(i);
+                return true;
+            }
+        }
+        return false;
     }
 }

@@ -10,7 +10,7 @@ public class TestXmlTask
 {
     public static void main(String[] args) throws Exception
     {
-        XmlTask task = new XmlTask();
+        /*XmlTask task = new XmlTask("");
         task.changeOfficiantName("petya", "petrov", "vasya", "vasilenko");
         Calendar cal = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
@@ -18,6 +18,6 @@ public class TestXmlTask
         cal.setTime(date);
         double total = task.earningsTotal("vasilenko", cal);
         task.removeDay(cal);
-        XmlTask.saveObjectToXML("new.xml", Restaurant.class, task.getRestaurant());
+        XmlTask.saveObjectToXML("new.xml", Restaurant.class, task.getRestaurant());*/
     }
 }

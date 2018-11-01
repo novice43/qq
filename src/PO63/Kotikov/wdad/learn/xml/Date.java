@@ -1,21 +1,17 @@
 
 package PO63.Kotikov.wdad.learn.xml;
 
-import com.sun.xml.internal.bind.AnyTypeAdapter;
-
 import java.io.Serializable;
+import java.rmi.RemoteException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.adapters.HexBinaryAdapter;
-import javax.xml.bind.annotation.adapters.NormalizedStringAdapter;
-import javax.xml.bind.annotation.adapters.XmlAdapter;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 
 /**
@@ -153,6 +149,13 @@ public class Date implements Serializable
         return this.year == obj.year && this.month == obj.month && this.day == obj.day;
     }
 
+    public boolean equalsByDate(java.util.Date obj)
+    {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(obj);
+        return this.day == cal.get(Calendar.DAY_OF_MONTH) && this.month == cal.get(Calendar.MONTH)+1 && this.year == cal.get(Calendar.YEAR);
+    }
+
     @Override
     public boolean equals(Object obj)
     {
@@ -179,48 +182,10 @@ public class Date implements Serializable
         return officiantsOrder;
     }
 
-    //todo переносим в restaurant
-    public static List<Order> getOrdersByDate(Date date, List<Date> dates)
-    {
-        for(Date currentDate : dates)
-            if(currentDate.equalsByDate(date))
-                return currentDate.getOrder();
-        return new ArrayList<>();
-    }
-    //todo переносим в restaurant
-    public static boolean removeDate(Date day, List<Date> dates)
-    {
-        for(int i = 0; i < dates.size(); i++)
-        {
-            if (dates.get(i).equalsByDate(day))
-            {
-                dates.remove(i);
-                return true;
-            }
-        }
-        return false;
-    }
-
     public java.util.Date getDate()
     {
         java.util.Date d = java.sql.Date.valueOf(LocalDate.of(year, month, day));
         return d;
-    }
-    //todo переносим в restaurant
-    public static List<Date> getDatesByOfficiant(Officiant officiant, List<Date> dates)
-    {
-        List<Date> dateList = new ArrayList<>();
-        for (Date date : dates)
-        {
-            for (Order order : date.order)
-            {
-                if (order.officiant.equals(officiant))
-                {
-                    dateList.add(date);
-                }
-            }
-        }
-        return dateList;
     }
 
     @Override
@@ -228,4 +193,25 @@ public class Date implements Serializable
     {
         return day + "." + month + "." + year;
     }
+
+    public List<Order> getOrdersByOfficiant(Officiant officiant)
+    {
+        ArrayList<Order> ords = new ArrayList<>();
+        for(Order o : order)
+            if(o.officiant.equals(officiant))
+                ords.add(o);
+        return ords;
+    }
+
+    public boolean hasSomeOrdersByOfficiant(Officiant officiant)
+    {
+        return getOrdersByOfficiant(officiant).size() != 0;
+    }
+
+    public void updateOfficiantName(Officiant oldName, Officiant newName)
+    {
+        for(Order o : getOrdersByOfficiant(oldName))
+            o.setOfficiant(newName);
+    }
+
 }

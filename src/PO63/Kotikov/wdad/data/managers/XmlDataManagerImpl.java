@@ -14,7 +14,7 @@ public class XmlDataManagerImpl implements XmlDataManager, Serializable
 
     public void init() throws Exception
     {
-        task = new XmlTask();
+        task = new XmlTask("rest.xml");
     }
 
     @Override
@@ -44,33 +44,23 @@ public class XmlDataManagerImpl implements XmlDataManager, Serializable
     public void changeOfficiantName(Officiant oldOfficiant, Officiant newOfficiant) throws Exception
     {
         //Officiant.findOfficiant(oldOfficiant).changeOfficiantFullname(newOfficiant);
-        task.changeOfficiantName(oldOfficiant.getFirstname(), oldOfficiant.getSecondname(), newOfficiant.getFirstname(), newOfficiant.getSecondname());
+        task.changeOfficiantName(oldOfficiant, newOfficiant);
     }
 
-    //todo параметр - как и везде java.util.Date
+    //todo параметр - как и везде java.util.Date DONE
     @Override
-    public List<Order> getOrders(Date date) throws RemoteException
+    public List<Order> getOrders(java.util.Date date) throws RemoteException
     {
-        //todo сделай метод в xmlTask и вызывай его здесь
-        return Date.getOrdersByDate(Date.newInstance(date.getDay(), date.getMonth(), date.getYear(), null), task.getRestaurant().getDate());
+        //todo сделай метод в xmlTask и вызывай его здесь DONE
+        return task.getOrders(date);
     }
 
-    //todo возвращаем java.util.Date
+    //todo возвращаем java.util.Date DONE
     @Override
-    public Date lastOfficiantWorkDate(Officiant officiant) throws RemoteException
+    public java.util.Date lastOfficiantWorkDate(Officiant officiant) throws RemoteException
     {
-        //todo сделай метод в xmlTask и вызывай его здесь
-        List<Date> dates = Date.getDatesByOfficiant(officiant, task.getRestaurant().getDate());
-        List<Long> ret = new ArrayList<>();
-        dates.forEach((a) -> {
-            ret.add(a.getDate().getTime());
-        });
-        java.util.Date date;
-        if(ret.size() > 1) date = new java.util.Date(ret.stream().min((a, b) -> Long.compare(a, b)).get());
-        else
-            if(ret.size() == 1) date = new java.util.Date(ret.get(0));
-                    else return null;
-        return Date.newInstance(date.getDay(), date.getMonth(), date.getYear(), null);
+        //todo сделай метод в xmlTask и вызывай его здесь DONE
+        return task.lastOfficiantWorkDate(officiant);
     }
 
     @Override
