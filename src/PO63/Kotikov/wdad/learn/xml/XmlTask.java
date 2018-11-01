@@ -35,19 +35,20 @@ public class XmlTask
         restaurant = (Restaurant)loadObjectFromXML(filename, Restaurant.class);
     }
 
-    static Object loadObjectFromXML(String filename, Class c) throws Exception
+    public static Object loadObjectFromXML(String filename, Class c) throws Exception
     {
         System.setProperty("javax.xml.accessExternalDTD", "all");
         StringReader sr = new StringReader(new String(Files.readAllBytes(Paths.get(filename))));
         JAXBContext context = JAXBContext.newInstance(c);
         Unmarshaller unmarshaller = context.createUnmarshaller();
-        return (Object)unmarshaller.unmarshal(sr);
+        return unmarshaller.unmarshal(sr);
     }
 
     public static void saveObjectToXML(String filename, Class c, Object obj) throws Exception
     {
         JAXBContext context = JAXBContext.newInstance(c);
         Marshaller marshaller = context.createMarshaller();
+        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
         marshaller.marshal(obj, new FileOutputStream(filename));
     }
 

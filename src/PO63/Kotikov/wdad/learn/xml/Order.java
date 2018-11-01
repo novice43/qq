@@ -25,7 +25,6 @@ public class Order implements Serializable
 
     protected Officiant officiant;
     protected List<Item> item;
-    //todo totalcost - сделай тип int или double (в зависимости от типа поля cost в item). DONE
     protected double totalcost;
 
     /**

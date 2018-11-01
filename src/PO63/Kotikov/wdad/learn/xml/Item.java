@@ -1,8 +1,6 @@
 
 package PO63.Kotikov.wdad.learn.xml;
 
-import com.sun.xml.internal.bind.AnyTypeAdapter;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -21,7 +19,6 @@ import java.io.Serializable;
 @XmlRootElement(name = "item")
 public class Item implements Serializable
 {
-    //todo cost - сделай тип int или double, JAXB прекрасно конвертит примитивы в String и наоборот. DONE
 
     @XmlAttribute(name = "name", required = true)
     @XmlJavaTypeAdapter(NormalizedStringAdapter.class)

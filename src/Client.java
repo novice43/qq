@@ -14,7 +14,7 @@ public class Client
         List<Order> oo = client.getRemoteObject().getOrders(Date.newInstance(7, 12, 2006, null).getDate());
         for(Order o : oo)
             System.out.println(o.toString());
-        client.getRemoteObject().lastOfficiantWorkDate(s);
+        System.out.println(client.getRemoteObject().lastOfficiantWorkDate(s));
         client.getRemoteObject().removeDay(Date.newInstance(7, 12, 2006, null).getDate());
         client.getRemoteObject().save();
     }

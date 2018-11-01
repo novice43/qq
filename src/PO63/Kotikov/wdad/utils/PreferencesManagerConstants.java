@@ -5,8 +5,7 @@ public interface PreferencesManagerConstants
     String CLASS_PROVIDER = "appconfig/rmi/classprovider";
     String POLICY_PATH = "appconfig/rmi/client/policypath";
     String USE_CODE_BASE_ONLY = "appconfig/rmi/client/usecodebaseonly";
-    String CREATE_REGISTRY = "appconfig/rmi/server/registry/createregistry";
-    String REGISTRY_ADDRESS = "appconfig/rmi/server/registry/registryaddress";
-    String REGISTRY_PORT = "appconfig/rmi/server/registry/registryport";
-    String REGISTRY_ENTRY_POINT = "appconfig/rmi/server/registry";
+    String CREATE_REGISTRY = "appconfig/rmi/server/createregistry";
+    String REGISTRY_ADDRESS = "appconfig/rmi/server/registryaddress";
+    String REGISTRY_PORT = "appconfig/rmi/server/registryport";
 }

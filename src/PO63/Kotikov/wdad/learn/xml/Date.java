@@ -24,7 +24,6 @@ import javax.xml.bind.annotation.XmlType;
 @XmlRootElement(name = "date")
 public class Date implements Serializable
 {
-    //todo day, moth, year - сделай тип int, JAXB прекрасно конвертит примитивы в String и наоборот. Работа с примитивами сильно упростит твои проверки DONE
     @XmlAttribute(name = "day", required = true)
     protected int day;
     @XmlAttribute(name = "month", required = true)

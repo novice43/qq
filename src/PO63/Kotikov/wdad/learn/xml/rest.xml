@@ -3,7 +3,7 @@
 <restaurant>
     <date day="07" month="12" year="2006">
         <order>
-            <officiant secondname="petrov"/>
+            <officiant firstname="petya" secondname="petrov"/>
             <item name="zhigulevskoe" cost="80"/>
             <item name="frees" cost="111"/>
             <totalcost>191</totalcost>

@@ -1,5 +1,7 @@
 package PO63.Kotikov.wdad.data.managers;
 
+import PO63.Kotikov.wdad.learn.xml.XmlTask;
+import PO63.Kotikov.wdad.utils.PreferencesManagerConstants;
 import PO63.Kotikov.wdad.utils.RegistryInfo;
 import org.w3c.dom.Document;
 
@@ -15,201 +17,104 @@ import java.util.List;
 
 public class PreferencesManager
 {
-    private Properties activeProperties;
 
     private String filename;
 
-    private Appconfig rootElement;
+    private Appconfig appconfig;
 
     public final static PreferencesManager instance = new PreferencesManager();
 
-    private static Object loadObjectFromXML(String filename, Class c) throws Exception
-    {
-        StringReader sr = new StringReader(new String(Files.readAllBytes(Paths.get(filename))));
-        JAXBContext context = JAXBContext.newInstance(c);
-        Unmarshaller unmarshaller = context.createUnmarshaller();
-        return unmarshaller.unmarshal(sr);
-    }
-
-    private static void saveObjectToXML(String filename, Class c, Object obj) throws Exception
-    {
-        JAXBContext context = JAXBContext.newInstance(c);
-        Marshaller marshaller = context.createMarshaller();
-        marshaller.marshal(obj, new FileOutputStream(filename));
-    }
+    private boolean createRegistry;
+    private int port;
 
     public void readXml(String filename) throws Exception
     {
-        rootElement = (Appconfig) loadObjectFromXML(filename, Appconfig.class);
-        activeProperties = new Properties(filename);
+        appconfig = (Appconfig)XmlTask.loadObjectFromXML(filename, Appconfig.class);
+        RegistryInfo.parse(appconfig.rmi.server.registryOrBindedobject);
+        fillServerProperties();
         this.filename = filename;
     }
 
-    public Appconfig getRootElement()
-    {
-        return rootElement;
-    }
-
-    @Deprecated
-    public static Rmi getRmi(Appconfig rootElement)
-    {
-        return rootElement.rmi;
-    }
-
-    @Deprecated
-    public static void setRmi(Appconfig rootElement, Rmi rmi)
-    {
-        rootElement.rmi = rmi;
-    }
-
-    @Deprecated
-    public static Server getServer(Appconfig rootElement)
-    {
-        return rootElement.rmi.server;
-    }
-
-    @Deprecated
-    public static void setServer(Appconfig rootElement, Server server)
-    {
-        rootElement.rmi.server = server;
-    }
-
-    @Deprecated
-    public static Client getClient(Appconfig rootElement)
-    {
-        return rootElement.rmi.client;
-    }
-
-    @Deprecated
-    public static void setClient(Appconfig rootElement, Client client)
-    {
-        rootElement.rmi.client = client;
-    }
-
-    @Deprecated
-    public static void setClassprovider(Appconfig rootElement, String classprovider)
-    {
-        rootElement.rmi.classprovider = classprovider;
-    }
-
-    @Deprecated
-    public static String getClassprovider(Appconfig rootElement)
-    {
-        return rootElement.rmi.classprovider;
-    }
-
-    @Deprecated
-    public static List<Object> getRegistryOrBindedObject(Appconfig rootElement)
-    {
-        return rootElement.rmi.server.registryOrBindedobject;
-    }
-
-    @Deprecated
-    public static void setRegistryOrBindedObject(Appconfig rootElement, List<Object> objects)
-    {
-        rootElement.rmi.server.registryOrBindedobject = objects;
-    }
-
-    @Deprecated
-    public static void setPolicyPath(Appconfig rootElement, String policyPath)
-    {
-        rootElement.rmi.client.policypath = policyPath;
-    }
-
-    @Deprecated
-    public static String getPolicyPath(Appconfig rootElement)
-    {
-        return rootElement.rmi.client.policypath;
-    }
-
-    @Deprecated
-    public static void setUseCodeBaseOnly(Appconfig rootElement, String useCodeBaseOnly)
-    {
-        rootElement.rmi.client.usecodebaseonly = useCodeBaseOnly;
-    }
-
-    @Deprecated
-    public static String getUseCodeBaseOnly(Appconfig rootElement)
-    {
-        return rootElement.rmi.client.usecodebaseonly;
-    }
-
-    private void checkActiveProperties() throws Exception
-    {
-        if(activeProperties == null) throw new Exception("Trying to set properties when they are not configured(NullPointer)");
-    }
 
     public void setProperty(String key, String value) throws Exception
     {
-        checkActiveProperties();
-        activeProperties.setProperty(key, value);
-        saveFromDOM();
+        switch (key)
+        {
+            case PreferencesManagerConstants.CLASS_PROVIDER:
+                appconfig.rmi.classprovider = value;
+                break;
+            case PreferencesManagerConstants.POLICY_PATH:
+                appconfig.rmi.client.policypath = value;
+                break;
+            case PreferencesManagerConstants.USE_CODE_BASE_ONLY:
+                appconfig.rmi.client.usecodebaseonly = value;
+                break;
+            case PreferencesManagerConstants.CREATE_REGISTRY:
+                RegistryInfo.registries.get(0).registry.setCreateregistry(value);
+                break;
+            case PreferencesManagerConstants.REGISTRY_ADDRESS:
+                RegistryInfo.registries.get(0).registry.setRegistryaddress(value);
+                break;
+            case PreferencesManagerConstants.REGISTRY_PORT:
+                RegistryInfo.registries.get(0).registry.setRegistryport(value);
+                break;
+        }
     }
 
     public String getProperty(String key) throws Exception
     {
-        checkActiveProperties();
-        return activeProperties.getProperty(key);
-    }
-
-    public void setProperties(Properties.InternalProperties prop) throws Exception
-    {
-        checkActiveProperties();
-        activeProperties.setProperties(prop);
-        saveFromDOM();
-    }
-
-    public Properties.InternalProperties getProperties() throws Exception
-    {
-        checkActiveProperties();
-        return activeProperties.getProperties();
-    }
-
-    public void addBindedObject(String name, String className, Registry registry) throws Exception
-    {
-        Bindedobject obj = new Bindedobject();
-        obj.clazz = className;
-        obj.name = name;
-        RegistryInfo.parse(rootElement.rmi.server.registryOrBindedobject);
-        for(RegistryInfo info : RegistryInfo.registries)
-            if(info.registry.equals(registry))
-            {
-                info.lastIndex++;
-                rootElement.rmi.server.registryOrBindedobject.add(info.lastIndex, obj);
-                saveFromInstance();
-                return;
-            }
-    }
-
-    public void removeBindedObject(String name) throws Exception
-    {
-        List<Object> collection = rootElement.rmi.server.registryOrBindedobject;
-        Object current;
-        for(int i = 0; i < collection.size(); i++)
+        switch (key)
         {
-            current = collection.get(i);
-            if (current instanceof Bindedobject && ((Bindedobject) current).equalsByName(name))
-                collection.remove(i);
+            case PreferencesManagerConstants.CLASS_PROVIDER:
+                return appconfig.rmi.classprovider;
+            case PreferencesManagerConstants.POLICY_PATH:
+                return appconfig.rmi.client.policypath;
+            case PreferencesManagerConstants.USE_CODE_BASE_ONLY:
+                return appconfig.rmi.client.usecodebaseonly;
+            case PreferencesManagerConstants.CREATE_REGISTRY:
+                createRegistry = RegistryInfo.registries.get(0).registry.getCreateregistry().toLowerCase().equals("yes");
+                return RegistryInfo.registries.get(0).registry.getCreateregistry();
+            case PreferencesManagerConstants.REGISTRY_ADDRESS:
+                return RegistryInfo.registries.get(0).registry.getRegistryaddress();
+            case PreferencesManagerConstants.REGISTRY_PORT:
+                port = Integer.parseInt(RegistryInfo.registries.get(0).registry.getRegistryport());
+                return RegistryInfo.registries.get(0).registry.getRegistryport();
+                default:
+                    throw new Exception("Unknown property " + key);
         }
-        saveFromInstance();
     }
 
-    private void saveFromDOM() throws Exception
+    public void fillServerProperties() throws Exception
     {
-        activeProperties.save(filename);
-        updateData();
+        getProperty(PreferencesManagerConstants.CREATE_REGISTRY);
+        getProperty(PreferencesManagerConstants.REGISTRY_PORT);
     }
 
-    private void saveFromInstance() throws Exception
+    public void addBindedObject(String name, String className, Registry registry)
     {
-        saveObjectToXML(filename, Appconfig.class, rootElement);
-        updateData();
+        appconfig.rmi.server.addBindedObject(name, className, registry);
     }
 
-    private void updateData() throws Exception
+    public void addBindedObject(String name, String className)
     {
-        rootElement = (Appconfig) loadObjectFromXML(filename, Appconfig.class);
-        activeProperties = new Properties(filename);
+        appconfig.rmi.server.addBindedObject(name, className);
+    }
+
+    public void removeBindedObject(String name)
+    {
+        appconfig.rmi.server.removeBindedObject(name);
+    }
+
+    public void removeBindedObject(String name, Registry registry)
+    {
+        appconfig.rmi.server.removeBindedObject(name, registry);
+    }
+
+    public void save() throws Exception
+    {
+        appconfig.rmi.server.registryOrBindedobject.clear();
+        appconfig.rmi.server.registryOrBindedobject.addAll(RegistryInfo.getObjectList());
+        XmlTask.saveObjectToXML(filename, Appconfig.class, appconfig);
     }
 
     public String getFilename()
@@ -222,4 +127,13 @@ public class PreferencesManager
         this.filename = filename;
     }
 
+    public boolean isCreateRegistry()
+    {
+        return createRegistry;
+    }
+
+    public int getPort()
+    {
+        return port;
+    }
 }

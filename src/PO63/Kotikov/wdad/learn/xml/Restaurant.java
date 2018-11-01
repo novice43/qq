@@ -63,7 +63,6 @@ public class Restaurant implements Serializable
         return null;
     }
 
-    //todo переносим в restaurant DONE
     public List<Date> getDatesByOfficiant(Officiant officiant)
     {
         List<Date> dateList = new ArrayList<>();
@@ -84,7 +83,6 @@ public class Restaurant implements Serializable
     public void changeOfficiantName(Officiant oldName, Officiant newName)
     {
         for(Date d : date)
-            //todo Я ТЕБЯ НЕНАВИЖУ! DONE. I HATE YOU TOO
             d.updateOfficiantName(oldName, newName);
     }
 

@@ -1,6 +1,7 @@
 package PO63.Kotikov.wdad.learn.rmi;
 
 import PO63.Kotikov.wdad.data.managers.*;
+import PO63.Kotikov.wdad.utils.PreferencesManagerConstants;
 import PO63.Kotikov.wdad.utils.RegistryInfo;
 
 import java.rmi.Remote;
@@ -32,13 +33,13 @@ public class Client
     public void main(String[] args) throws Exception
     {
         preferencesManager.readXml(CONFIG_FILE);
-        Properties.InternalProperties properties = preferencesManager.getProperties();
         try
         {
-            rmiRegistry = LocateRegistry.getRegistry(properties.getRegistryAddress(), properties.getRegistryPort());
+            rmiRegistry = LocateRegistry.getRegistry(preferencesManager.getProperty(PreferencesManagerConstants.REGISTRY_ADDRESS),
+                    preferencesManager.getPort());
             remoteObject = (XmlDataManager)rmiRegistry.lookup(remoteObjectName);
-            RegistryInfo.parse(PreferencesManager.getRmi(preferencesManager.getRootElement()).getServer().getRegistryOrBindedobject());
-            remoteObject = (XmlDataManager)rmiRegistry.lookup(((Bindedobject)RegistryInfo.registries.get(0).bindedObjects.get(0)).getName());
+            //RegistryInfo.parse(PreferencesManager.getRmi(preferencesManager.getRootElement()).getServer().getRegistryOrBindedobject());
+            remoteObject = (XmlDataManager)rmiRegistry.lookup((RegistryInfo.registries.get(0).bindedObjects.get(0)).getName());
         }
         catch (Exception ex)
         {

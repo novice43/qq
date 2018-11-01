@@ -1,6 +1,8 @@
 
 package PO63.Kotikov.wdad.data.managers;
 
+import PO63.Kotikov.wdad.utils.RegistryInfo;
+
 import java.util.ArrayList;
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -55,6 +57,38 @@ public class Server {
             registryOrBindedobject = new ArrayList<Object>();
         }
         return this.registryOrBindedobject;
+    }
+
+    public void addBindedObject(String name, String className, Registry registry)
+    {
+        for(RegistryInfo rinfo : RegistryInfo.registries)
+            if(rinfo.equalsByRegistry(registry))
+                rinfo.addBindedObject(name, className);
+    }
+
+    public void addBindedObject(String name, String className)
+    {
+        RegistryInfo rinfo = RegistryInfo.registries.get(RegistryInfo.registries.size()-1);
+        rinfo.addBindedObject(name, className);
+    }
+
+    public void removeBindedObject(String name)
+    {
+        for(RegistryInfo rinfo : RegistryInfo.registries)
+            rinfo.removeBindedObject(name);
+    }
+
+    public boolean removeBindedObject(String name, Registry registry)
+    {
+        for(RegistryInfo rinfo : RegistryInfo.registries)
+        {
+            if (rinfo.equalsByRegistry(registry))
+            {
+                rinfo.removeBindedObject(name);
+                return true;
+            }
+        }
+        return false;
     }
 
 }
