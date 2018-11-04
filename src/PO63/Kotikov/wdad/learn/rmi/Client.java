@@ -7,7 +7,6 @@ import PO63.Kotikov.wdad.utils.RegistryInfo;
 import java.rmi.Remote;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-
 public class Client
 {
     private static PreferencesManager preferencesManager = PreferencesManager.instance;
