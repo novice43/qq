@@ -23,6 +23,7 @@ public class DataSourceFactory
         ds.setDatabaseName(dbName);
         ds.setUser(user);
         ds.setPassword(password);
+        ds.setServerTimezone("UTC");
         return ds;
     }
 

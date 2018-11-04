@@ -1,9 +1,9 @@
 package PO63.Kotikov.wdad.learn.rmi;
 
+import PO63.Kotikov.wdad.data.managers.JDBCDataManagerImpl;
 import PO63.Kotikov.wdad.data.managers.PreferencesManager;
-import PO63.Kotikov.wdad.data.managers.XmlDataManager;
+import PO63.Kotikov.wdad.data.managers.DataManager;
 import PO63.Kotikov.wdad.data.managers.XmlDataManagerImpl;
-import PO63.Kotikov.wdad.learn.xml.XmlTask;
 import PO63.Kotikov.wdad.utils.PreferencesManagerConstants;
 import PO63.Kotikov.wdad.utils.RegistryInfo;
 
@@ -19,11 +19,11 @@ public class Server
 
     private Registry rmiRegistry;
 
-    private XmlDataManager stub;
+    private DataManager stub;
 
-    private  XmlDataManagerImpl xmlDataManagerImpl;
+    private JDBCDataManagerImpl dataManagerImpl;
 
-    private static final String remoteObjectName = "XmlDataManagerImpl";
+    private static final String remoteObjectName = "JDBCDataManagerImpl";
 
     public void main(String[] args) throws Exception
     {
@@ -34,9 +34,8 @@ public class Server
                     LocateRegistry.createRegistry(preferencesManager.getPort()) :
                     LocateRegistry.getRegistry(preferencesManager.getProperty(PreferencesManagerConstants.REGISTRY_ADDRESS),
                             preferencesManager.getPort());
-            xmlDataManagerImpl = new XmlDataManagerImpl();
-            xmlDataManagerImpl.init();
-            stub = (XmlDataManager) UnicastRemoteObject.exportObject(xmlDataManagerImpl, 0);
+            dataManagerImpl = new JDBCDataManagerImpl(preferencesManager.getDataSource());
+            stub = (DataManager) UnicastRemoteObject.exportObject(dataManagerImpl, 0);
             rmiRegistry.bind(remoteObjectName, stub);
             preferencesManager.addBindedObject(remoteObjectName, stub.getClass().getCanonicalName(), RegistryInfo.registries.get(0).registry);
             preferencesManager.save();

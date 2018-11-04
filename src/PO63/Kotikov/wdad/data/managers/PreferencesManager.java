@@ -84,6 +84,11 @@ public class PreferencesManager
         }
     }
 
+    public Datasource getDataSource()
+    {
+        return appconfig.datasource;
+    }
+
     public void fillServerProperties() throws Exception
     {
         getProperty(PreferencesManagerConstants.CREATE_REGISTRY);

@@ -4,11 +4,10 @@ import PO63.Kotikov.wdad.learn.xml.*;
 
 import java.io.Serializable;
 import java.rmi.RemoteException;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class XmlDataManagerImpl implements XmlDataManager, Serializable
+public class XmlDataManagerImpl implements DataManager, Serializable
 {
     private XmlTask task;
 
