@@ -1,8 +1,8 @@
 
 package PO63.Kotikov.wdad.learn.xml;
 
+
 import java.io.Serializable;
-import java.rmi.RemoteException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -212,5 +212,4 @@ public class Date implements Serializable
         for(Order o : getOrdersByOfficiant(oldName))
             o.setOfficiant(newName);
     }
-
 }

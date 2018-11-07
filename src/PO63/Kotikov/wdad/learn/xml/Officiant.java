@@ -1,6 +1,8 @@
 
 package PO63.Kotikov.wdad.learn.xml;
 
+import PO63.Kotikov.wdad.data.managers.JDBCDataManagerImpl;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -93,4 +95,5 @@ public class Officiant implements Serializable
     public int hashCode() {
         return firstname.hashCode() ^ secondname.hashCode();
     }
+
 }

@@ -115,4 +115,11 @@ public class Order implements Serializable
         return sb.toString();
     }
 
+    public void countTotalCost()
+    {
+        double totalcost = 0.0;
+        for(Item item : item)
+            totalcost += item.cost;
+        this.totalcost = totalcost;
+    }
 }

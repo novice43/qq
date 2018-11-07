@@ -1,6 +1,7 @@
 
 package PO63.Kotikov.wdad.learn.xml;
 
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -24,8 +25,7 @@ public class Item implements Serializable
     @XmlJavaTypeAdapter(NormalizedStringAdapter.class)
     protected String name;
     @XmlAttribute(name = "cost", required = true)
-    @XmlJavaTypeAdapter(DoubleTypeAdapter.class)
-    protected Double cost;
+    protected double cost;
 
     /**
      * Gets the value of the name property.

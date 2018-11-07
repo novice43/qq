@@ -10,10 +10,10 @@ import java.util.List;
 
 public interface DataManager extends Remote
 {
-    double earningsTotal(Officiant officiant, java.util.Date calendar) throws Exception;
-    void removeDay(java.util.Date calendar) throws RemoteException;
+    double earningsTotal(Officiant officiant, java.util.Date date) throws Exception;
+    void removeDay(java.util.Date date) throws Exception;
     void changeOfficiantName(Officiant oldOfficiant, Officiant newOfficiant) throws Exception;
-    List<Order> getOrders(java.util.Date date) throws RemoteException;
-    java.util.Date lastOfficiantWorkDate(Officiant officiant) throws RemoteException;
+    List<Order> getOrders(java.util.Date date) throws Exception;
+    java.util.Date lastOfficiantWorkDate(Officiant officiant) throws Exception;
     void save() throws Exception;
 }
