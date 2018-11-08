@@ -75,4 +75,12 @@ public class Item implements Serializable
         this.cost = value;
     }
 
+    public static Item newInstance(String name, double cost)
+    {
+        Item item = new Item();
+        item.name = name;
+        item.cost = cost;
+        return item;
+    }
+
 }
