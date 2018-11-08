@@ -77,7 +77,7 @@ public class JDBCDataManagerImpl implements DataManager
         for(int i = 0; i < params.length; i++)
             stat.setObject(i+1, params[i]);
         ResultSet resultSet = null;
-        List<Object> objs = new ArrayList<>();
+        List<Object> objs = new ArrayList<>(description.getColumnCount());
         Map<Integer, Object[]> answer = new HashMap<>();
         switch (description.getType())
         {
@@ -99,7 +99,6 @@ public class JDBCDataManagerImpl implements DataManager
                 objs.add(stat.executeUpdate());
                 answer.put(1, objs.toArray());
                 break;
-
         }
         conn.close();
         return answer;
@@ -147,7 +146,7 @@ public class JDBCDataManagerImpl implements DataManager
         Officiant officiant;
         Order order;
         Item item;
-        boolean existingFlag;
+        boolean exists;
         Object[] current;
         List<Order> orders = new ArrayList<>();
         Map<Integer, Object[]> answer = executePreparedQuery(getOrdersQuery, new Object[] { sdf.format(date) },
@@ -168,15 +167,15 @@ public class JDBCDataManagerImpl implements DataManager
                 order.getItem().add(item);
             }
             order.countTotalCost();
-            existingFlag = false;
+            exists = false;
             for(Order ord : orders)
                 if(ord.getOfficiant().equals(officiant))
                 {
                     ord.getItem().addAll(order.getItem());
                     ord.countTotalCost();
-                    existingFlag = true;
+                    exists = true;
                 }
-            if(!existingFlag) orders.add(order);
+            if(!exists) orders.add(order);
         }
         return orders;
     }
