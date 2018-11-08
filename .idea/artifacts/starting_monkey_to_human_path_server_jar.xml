@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="starting-monkey-to-human-path-server:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/starting_monkey_to_human_path_server_jar</output-path>
+    <root id="archive" name="starting-monkey-to-human-path.jar">
+      <element id="module-output" name="starting-monkey-to-human-path" />
+    </root>
+  </artifact>
+</component>

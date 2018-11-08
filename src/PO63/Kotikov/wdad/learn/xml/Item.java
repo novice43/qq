@@ -1,9 +1,6 @@
 
-package PO63.Kotikov.wdad.data.managers;
+package PO63.Kotikov.wdad.learn.xml;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -12,6 +9,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.NormalizedStringAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import java.io.Serializable;
 
 
 /**
@@ -19,15 +17,15 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "")
-@XmlRootElement(name = "bindedobject")
-public class Bindedobject {
+@XmlRootElement(name = "item")
+public class Item implements Serializable
+{
 
     @XmlAttribute(name = "name", required = true)
     @XmlJavaTypeAdapter(NormalizedStringAdapter.class)
     protected String name;
-    @XmlAttribute(name = "class", required = true)
-    @XmlJavaTypeAdapter(NormalizedStringAdapter.class)
-    String clazz;
+    @XmlAttribute(name = "cost", required = true)
+    protected double cost;
 
     /**
      * Gets the value of the name property.
@@ -54,32 +52,27 @@ public class Bindedobject {
     }
 
     /**
-     * Gets the value of the clazz property.
+     * Gets the value of the cost property.
      * 
      * @return
      *     possible object is
-     *     {@link String }
+     *     {@link double }
      *     
      */
-    public String getClazz() {
-        return clazz;
+    public double getCost() {
+        return cost;
     }
 
     /**
-     * Sets the value of the clazz property.
+     * Sets the value of the cost property.
      * 
      * @param value
      *     allowed object is
-     *     {@link String }
+     *     {@link double }
      *     
      */
-    public void setClazz(String value) {
-        this.clazz = value;
-    }
-
-    boolean equalsByName(String name)
-    {
-        return this.name.equals(name);
+    public void setCost(double value) {
+        this.cost = value;
     }
 
 }
